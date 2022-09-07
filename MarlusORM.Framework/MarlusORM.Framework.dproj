@@ -101,6 +101,7 @@
         <DCCReference Include="Marlus.ORM.Attributes.pas"/>
         <DCCReference Include="Marlus.ORM.Rtti.pas"/>
         <DCCReference Include="Marlus.ORM.SQLBuilder.pas"/>
+        <DCCReference Include="Marlus.ORM.SQLSelectBuilder.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

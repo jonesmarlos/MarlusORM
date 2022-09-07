@@ -4,7 +4,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="MarlusORM.Examples\MarlusORM.Examples.dproj">
-            <Dependencies/>
+            <Dependencies>MarlusORM.Framework\MarlusORM.Framework.dproj</Dependencies>
         </Projects>
         <Projects Include="MarlusORM.Framework\MarlusORM.Framework.dproj">
             <Dependencies/>
@@ -17,13 +17,13 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="MarlusORM_Examples">
+    <Target Name="MarlusORM_Examples" DependsOnTargets="MarlusORM.Framework">
         <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj"/>
     </Target>
-    <Target Name="MarlusORM_Examples:Clean">
+    <Target Name="MarlusORM_Examples:Clean" DependsOnTargets="MarlusORM.Framework:Clean">
         <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="MarlusORM_Examples:Make">
+    <Target Name="MarlusORM_Examples:Make" DependsOnTargets="MarlusORM.Framework:Make">
         <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Make"/>
     </Target>
     <Target Name="MarlusORM_Framework">

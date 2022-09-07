@@ -2,7 +2,8 @@ program MarlusORM.Examples;
 
 uses
   Vcl.Forms,
-  MarlusORM.Examples.Forms in 'MarlusORM.Examples.Forms.pas' {fmMarlusORMExamples};
+  Marlus.ORM.Examples.Forms in 'Marlus.ORM.Examples.Forms.pas' {fmMarlusORMExamples},
+  Marlus.ORM.Examples.Cities in 'Marlus.ORM.Examples.Cities.pas';
 
 {$R *.res}
 
