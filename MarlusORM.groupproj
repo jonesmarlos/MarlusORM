@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{876BB554-A95A-48DA-B8F1-1106CADB7140}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="MarlusORM.Examples\MarlusORM.Examples.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MarlusORM.Framework\MarlusORM.Framework.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="MarlusORM_Examples">
+        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_Examples:Clean">
+        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_Examples:Make">
+        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_Framework">
+        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_Framework:Clean">
+        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_Framework:Make">
+        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="MarlusORM_Examples;MarlusORM_Framework"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="MarlusORM_Examples:Clean;MarlusORM_Framework:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="MarlusORM_Examples:Make;MarlusORM_Framework:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
