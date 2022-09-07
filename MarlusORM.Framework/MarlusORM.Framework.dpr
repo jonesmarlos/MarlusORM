@@ -2,7 +2,8 @@ program MarlusORM.Framework;
 
 uses
   Vcl.Forms,
-  Marlus.ORM.Attributes in 'Marlus.ORM.Attributes.pas';
+  Marlus.ORM.Attributes in 'Marlus.ORM.Attributes.pas',
+  Marlus.ORM.Rtti in 'Marlus.ORM.Rtti.pas';
 
 {$R *.res}
 
