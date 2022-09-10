@@ -3,11 +3,35 @@
         <ProjectGuid>{876BB554-A95A-48DA-B8F1-1106CADB7140}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="MarlusORM.Examples\MarlusORM.Examples.dproj">
-            <Dependencies>MarlusORM.Framework\MarlusORM.Framework.dproj</Dependencies>
-        </Projects>
-        <Projects Include="MarlusORM.Framework\MarlusORM.Framework.dproj">
+        <Projects Include="MarlusORM.Commons\MarlusORM.Commons.dproj">
             <Dependencies/>
+        </Projects>
+        <Projects Include="MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.SQLBuilder.Extensions\MarlusORM.SQLBuilder.Extensions.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.SQLBuilder.Samples\MarlusORM.SQLBuilder.Samples.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj;MarlusORM.SQLBuilder.Extensions\MarlusORM.SQLBuilder.Extensions.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataMapper\MarlusORM.DataMapper.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataMapper.Extensions\MarlusORM.DataMapper.Extensions.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.DataMapper\MarlusORM.DataMapper.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataMapper.Samples\MarlusORM.DataMapper.Samples.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.DataMapper\MarlusORM.DataMapper.dproj;MarlusORM.DataMapper.Extensions\MarlusORM.DataMapper.Extensions.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataBinder\MarlusORM.DataBinder.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataBinder.Extensions\MarlusORM.DataBinder.Extensions.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.DataBinder\MarlusORM.DataBinder.dproj</Dependencies>
+        </Projects>
+        <Projects Include="MarlusORM.DataBinder.Samples\MarlusORM.DataBinder.Samples.dproj">
+            <Dependencies>MarlusORM.Commons\MarlusORM.Commons.dproj;MarlusORM.DataBinder\MarlusORM.DataBinder.dproj;MarlusORM.DataBinder.Extensions\MarlusORM.DataBinder.Extensions.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -17,32 +41,104 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="MarlusORM_Examples" DependsOnTargets="MarlusORM.Framework">
-        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj"/>
+    <Target Name="MarlusORM_Commons">
+        <MSBuild Projects="MarlusORM.Commons\MarlusORM.Commons.dproj"/>
     </Target>
-    <Target Name="MarlusORM_Examples:Clean" DependsOnTargets="MarlusORM.Framework:Clean">
-        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Clean"/>
+    <Target Name="MarlusORM_Commons:Clean">
+        <MSBuild Projects="MarlusORM.Commons\MarlusORM.Commons.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="MarlusORM_Examples:Make" DependsOnTargets="MarlusORM.Framework:Make">
-        <MSBuild Projects="MarlusORM.Examples\MarlusORM.Examples.dproj" Targets="Make"/>
+    <Target Name="MarlusORM_Commons:Make">
+        <MSBuild Projects="MarlusORM.Commons\MarlusORM.Commons.dproj" Targets="Make"/>
     </Target>
-    <Target Name="MarlusORM_Framework">
-        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj"/>
+    <Target Name="MarlusORM_SQLBuilder" DependsOnTargets="MarlusORM.Commons">
+        <MSBuild Projects="MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj"/>
     </Target>
-    <Target Name="MarlusORM_Framework:Clean">
-        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj" Targets="Clean"/>
+    <Target Name="MarlusORM_SQLBuilder:Clean" DependsOnTargets="MarlusORM.Commons:Clean">
+        <MSBuild Projects="MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="MarlusORM_Framework:Make">
-        <MSBuild Projects="MarlusORM.Framework\MarlusORM.Framework.dproj" Targets="Make"/>
+    <Target Name="MarlusORM_SQLBuilder:Make" DependsOnTargets="MarlusORM.Commons:Make">
+        <MSBuild Projects="MarlusORM.SQLBuilder\MarlusORM.SQLBuilder.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Extensions" DependsOnTargets="MarlusORM.Commons;MarlusORM.SQLBuilder">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Extensions\MarlusORM.SQLBuilder.Extensions.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Extensions:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.SQLBuilder:Clean">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Extensions\MarlusORM.SQLBuilder.Extensions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Extensions:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.SQLBuilder:Make">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Extensions\MarlusORM.SQLBuilder.Extensions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Samples" DependsOnTargets="MarlusORM.Commons;MarlusORM.SQLBuilder;MarlusORM.SQLBuilder.Extensions">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Samples\MarlusORM.SQLBuilder.Samples.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Samples:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.SQLBuilder:Clean;MarlusORM.SQLBuilder.Extensions:Clean">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Samples\MarlusORM.SQLBuilder.Samples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_SQLBuilder_Samples:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.SQLBuilder:Make;MarlusORM.SQLBuilder.Extensions:Make">
+        <MSBuild Projects="MarlusORM.SQLBuilder.Samples\MarlusORM.SQLBuilder.Samples.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper" DependsOnTargets="MarlusORM.Commons">
+        <MSBuild Projects="MarlusORM.DataMapper\MarlusORM.DataMapper.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper:Clean" DependsOnTargets="MarlusORM.Commons:Clean">
+        <MSBuild Projects="MarlusORM.DataMapper\MarlusORM.DataMapper.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper:Make" DependsOnTargets="MarlusORM.Commons:Make">
+        <MSBuild Projects="MarlusORM.DataMapper\MarlusORM.DataMapper.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Extensions" DependsOnTargets="MarlusORM.Commons;MarlusORM.DataMapper">
+        <MSBuild Projects="MarlusORM.DataMapper.Extensions\MarlusORM.DataMapper.Extensions.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Extensions:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.DataMapper:Clean">
+        <MSBuild Projects="MarlusORM.DataMapper.Extensions\MarlusORM.DataMapper.Extensions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Extensions:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.DataMapper:Make">
+        <MSBuild Projects="MarlusORM.DataMapper.Extensions\MarlusORM.DataMapper.Extensions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Samples" DependsOnTargets="MarlusORM.Commons;MarlusORM.DataMapper;MarlusORM.DataMapper.Extensions">
+        <MSBuild Projects="MarlusORM.DataMapper.Samples\MarlusORM.DataMapper.Samples.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Samples:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.DataMapper:Clean;MarlusORM.DataMapper.Extensions:Clean">
+        <MSBuild Projects="MarlusORM.DataMapper.Samples\MarlusORM.DataMapper.Samples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataMapper_Samples:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.DataMapper:Make;MarlusORM.DataMapper.Extensions:Make">
+        <MSBuild Projects="MarlusORM.DataMapper.Samples\MarlusORM.DataMapper.Samples.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder" DependsOnTargets="MarlusORM.Commons">
+        <MSBuild Projects="MarlusORM.DataBinder\MarlusORM.DataBinder.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder:Clean" DependsOnTargets="MarlusORM.Commons:Clean">
+        <MSBuild Projects="MarlusORM.DataBinder\MarlusORM.DataBinder.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder:Make" DependsOnTargets="MarlusORM.Commons:Make">
+        <MSBuild Projects="MarlusORM.DataBinder\MarlusORM.DataBinder.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Extensions" DependsOnTargets="MarlusORM.Commons;MarlusORM.DataBinder">
+        <MSBuild Projects="MarlusORM.DataBinder.Extensions\MarlusORM.DataBinder.Extensions.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Extensions:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.DataBinder:Clean">
+        <MSBuild Projects="MarlusORM.DataBinder.Extensions\MarlusORM.DataBinder.Extensions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Extensions:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.DataBinder:Make">
+        <MSBuild Projects="MarlusORM.DataBinder.Extensions\MarlusORM.DataBinder.Extensions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Samples" DependsOnTargets="MarlusORM.Commons;MarlusORM.DataBinder;MarlusORM.DataBinder.Extensions">
+        <MSBuild Projects="MarlusORM.DataBinder.Samples\MarlusORM.DataBinder.Samples.dproj"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Samples:Clean" DependsOnTargets="MarlusORM.Commons:Clean;MarlusORM.DataBinder:Clean;MarlusORM.DataBinder.Extensions:Clean">
+        <MSBuild Projects="MarlusORM.DataBinder.Samples\MarlusORM.DataBinder.Samples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarlusORM_DataBinder_Samples:Make" DependsOnTargets="MarlusORM.Commons:Make;MarlusORM.DataBinder:Make;MarlusORM.DataBinder.Extensions:Make">
+        <MSBuild Projects="MarlusORM.DataBinder.Samples\MarlusORM.DataBinder.Samples.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="MarlusORM_Examples;MarlusORM_Framework"/>
+        <CallTarget Targets="MarlusORM_Commons;MarlusORM_SQLBuilder;MarlusORM_SQLBuilder_Extensions;MarlusORM_SQLBuilder_Samples;MarlusORM_DataMapper;MarlusORM_DataMapper_Extensions;MarlusORM_DataMapper_Samples;MarlusORM_DataBinder;MarlusORM_DataBinder_Extensions;MarlusORM_DataBinder_Samples"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="MarlusORM_Examples:Clean;MarlusORM_Framework:Clean"/>
+        <CallTarget Targets="MarlusORM_Commons:Clean;MarlusORM_SQLBuilder:Clean;MarlusORM_SQLBuilder_Extensions:Clean;MarlusORM_SQLBuilder_Samples:Clean;MarlusORM_DataMapper:Clean;MarlusORM_DataMapper_Extensions:Clean;MarlusORM_DataMapper_Samples:Clean;MarlusORM_DataBinder:Clean;MarlusORM_DataBinder_Extensions:Clean;MarlusORM_DataBinder_Samples:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="MarlusORM_Examples:Make;MarlusORM_Framework:Make"/>
+        <CallTarget Targets="MarlusORM_Commons:Make;MarlusORM_SQLBuilder:Make;MarlusORM_SQLBuilder_Extensions:Make;MarlusORM_SQLBuilder_Samples:Make;MarlusORM_DataMapper:Make;MarlusORM_DataMapper_Extensions:Make;MarlusORM_DataMapper_Samples:Make;MarlusORM_DataBinder:Make;MarlusORM_DataBinder_Extensions:Make;MarlusORM_DataBinder_Samples:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
