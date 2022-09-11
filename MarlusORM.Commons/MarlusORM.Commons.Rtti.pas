@@ -9,19 +9,17 @@ type
 
   TRttiFieldHelper = class helper for TRttiField
   public
-    function IsSQLField: Boolean;
-    function IsSQLDefaultValue(AInstance: Pointer): Boolean;
-    function IsSQLPrimaryKey: Boolean;
-    function SQLFieldName: string;
-
-    function GetSQLFieldInfo(out AName: string): Boolean;
+    function IsSQLField: Boolean; virtual;
+    function IsSQLDefaultValue(AInstance: Pointer): Boolean; virtual;
+    function IsSQLPrimaryKey: Boolean; virtual;
+    function SQLFieldName: string; virtual;
   end;
 
   TRttiTypeHelper = class helper for TRttiType
   public
-    function IsSQLEntity: Boolean;
-    function GetSQLEntityInfo(out AName: string): Boolean;
-    function GetSQLFieldPrimaryKey(out AName: string): Boolean;
+    function IsSQLEntity: Boolean; virtual;
+    function SQLEntityName: string; virtual;
+    function SQLPrimaryKeyName: string; virtual;
   end;
 
 implementation
@@ -29,7 +27,8 @@ implementation
 uses
   System.SysUtils,
   System.Variants,
-  MarlusORM.Commons.Attributes;
+  MarlusORM.Commons.Attributes,
+  MarlusORM.Commons.Configurations;
 
 { TRttiFieldHelper }
 
@@ -62,28 +61,22 @@ begin
     Exit(LValue.GetArrayLength = 0);
 
   case Self.FieldType.TypeKind of
-    tkUnknown: Result := False;
     tkInteger: Result := LValue.AsInteger = 0;
     tkChar: Result := LValue.AsString.IsEmpty;
     tkEnumeration: Result := LValue.AsOrdinal = 0;
     tkFloat: Result := LValue.AsExtended = 0;
     tkString: Result := LValue.AsString.IsEmpty;
     tkSet: Result := LValue.IsEmpty;
-    tkClass: Result := False;
-    tkMethod: Result := False;
     tkWChar: Result := LValue.AsString.IsEmpty;
     tkLString: Result := LValue.AsString.IsEmpty;
     tkWString: Result := LValue.AsString.IsEmpty;
     tkVariant: Result := VarIsClear(LValue.AsVariant);
     tkArray: Result := LValue.GetArrayLength = 0;
-    tkRecord: Result := False;
-    tkInterface: Result := False;
     tkInt64: Result := LValue.AsInt64 = 0;
     tkDynArray: Result := LValue.GetArrayLength = 0;
     tkUString: Result := LValue.AsString.IsEmpty;
-    tkClassRef: Result := False;
-    tkPointer: Result := False;
-    tkProcedure: Result := False;
+  else
+    Result := False;
   end;
 end;
 
@@ -98,35 +91,23 @@ begin
 end;
 
 function TRttiFieldHelper.SQLFieldName: string;
+var
+  LAttribute: TCustomAttribute;
+  LProperty: TRttiProperty;
 begin
   if not Self.IsSQLField then
     Exit(EmptyStr);
 
-  Result := Self.Name.Substring(1).ToLower;
-
-
-end;
-
-function TRttiFieldHelper.GetSQLFieldInfo(out AName: string): Boolean;
-var
-  LAttribute: TCustomAttribute;
-  LFieldAttr: SQLFieldAttribute;
-begin
-  Result := Self.IsSQLField;
-
-  if not Result then
-    Exit(False);
-
-  AName := Self.Name.Substring(1).ToUpper;
+  Result := TSQLConfigurations.FieldFormatter.Format(Self.Name.Substring(1));
 
   for LAttribute in Self.GetAttributes do
-  begin
     if LAttribute is SQLFieldAttribute then
-    begin
-      AName := SQLFieldAttribute(LAttribute).Name;
-      Break;
-    end;
-  end;
+      Exit(TSQLConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
+
+  for LProperty in Self.FieldType.GetProperties do
+    for LAttribute in LProperty.GetAttributes do
+      if LAttribute is SQLFieldAttribute then
+        Exit(TSQLConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
 end;
 
 { TRttiTypeHelper }
@@ -136,48 +117,37 @@ begin
   Result := Self.IsPublicType and (not Self.IsRecord);
 end;
 
-function TRttiTypeHelper.GetSQLEntityInfo(out AName: string): Boolean;
+function TRttiTypeHelper.SQLEntityName: string;
 var
   LAttribute: TCustomAttribute;
 begin
-  Result := Self.IsSQLEntity;
+  if not Self.IsSQLEntity then
+    Exit(EmptyStr);
 
-  if not Result then
-    Exit(False);
-
-  AName := Self.Name.Substring(1).ToUpper;
+  Result := TSQLConfigurations.EntityFormatter.Format(Self.Name.Substring(1));
 
   for LAttribute in Self.GetAttributes do
-  begin
     if LAttribute is SQLEntityAttribute then
-    begin
-      AName := SQLEntityAttribute(LAttribute).Name;
-      Break;
-    end;
-  end;
+      Exit(TSQLConfigurations.EntityFormatter.Format(SQLEntityAttribute(LAttribute).Name));
 end;
 
-function TRttiTypeHelper.GetSQLFieldPrimaryKey(out AName: string): Boolean;
+function TRttiTypeHelper.SQLPrimaryKeyName: string;
 var
   LField: TRttiField;
   LFirst: Boolean;
 begin
-  Result := Self.IsSQLEntity;
-
-  if not Result then
-    Exit(False);
+  if not Self.IsSQLEntity then
+    Exit(EmptyStr);
 
   LFirst := True;
   for LField in Self.GetFields do
   begin
     if LField.IsSQLPrimaryKey then
-    begin
-      LField.GetSQLFieldInfo(AName);
-      Break;
-    end;
+      Exit(LField.SQLFieldName);
+
     if LFirst and LField.IsSQLField then
     begin
-      LField.GetSQLFieldInfo(AName);
+      Result := LField.SQLFieldName;
       LFirst := False;
     end;
   end;

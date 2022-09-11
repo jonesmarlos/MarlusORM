@@ -83,6 +83,7 @@
         <DCCReference Include="MarlusORM.Commons.Attributes.pas"/>
         <DCCReference Include="MarlusORM.Commons.Rtti.pas"/>
         <DCCReference Include="MarlusORM.Commons.Formatters.pas"/>
+        <DCCReference Include="MarlusORM.Commons.Configurations.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -10,6 +10,8 @@ uses
 
 type
 
+  ESQLCaseNotFound = class(Exception);
+
   TSQLCaseFormatter = class
   public
     function Format(const AText: string): string; virtual; abstract;
@@ -30,6 +32,9 @@ type
   end;
 
 implementation
+
+uses
+  System.Character;
 
 type
 
@@ -74,13 +79,16 @@ type
 class function TSQLCaseFormatters.GetSQLCaseFormatter(const ACase: TSQLCase): TSQLCaseFormatter;
 begin
   if not FFormatters.TryGetValue(ACase, Result) then
-    raise Exception.Create('Case not found');
+    raise ESQLCaseNotFound.Create('Case not found');
 end;
 
 class procedure TSQLCaseFormatters.RegisterFormatter(const ACase: TSQLCase; const AFormatterClass: TSQLCaseFormatterClass);
 var
   LFormatter: TSQLCaseFormatter;
 begin
+  if AFormatterClass = nil then
+    raise EArgumentNilException.Create('Argument AFormatterClass is required');
+
   LFormatter := AFormatterClass.Create;
   FFormatters.Add(ACase, LFormatter);
 end;
@@ -94,7 +102,6 @@ begin
     FFormatters.Remove(ACase);
     LFormatter.Free;
   end;
-
 end;
 
 { TSQLDefaultCaseFormatter }
@@ -152,7 +159,7 @@ begin
     begin
       if CharInSet(LChar, ['A'..'Z']) then
         LResult.Append('_');
-      LResult.Append(LChar);
+      LResult.Append(LChar.ToLower);
     end;
 
     if LResult.Chars[0] = '_' then
@@ -179,7 +186,7 @@ begin
     begin
       if CharInSet(LChar, ['A'..'Z']) then
         LResult.Append('_');
-      LResult.Append(UpCase(LChar));
+      LResult.Append(LChar.ToUpper);
     end;
 
     if LResult.Chars[0] = '_' then

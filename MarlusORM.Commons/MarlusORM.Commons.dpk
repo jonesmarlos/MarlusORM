@@ -34,6 +34,7 @@ contains
   MarlusORM.Commons.Types in 'MarlusORM.Commons.Types.pas',
   MarlusORM.Commons.Attributes in 'MarlusORM.Commons.Attributes.pas',
   MarlusORM.Commons.Rtti in 'MarlusORM.Commons.Rtti.pas',
-  MarlusORM.Commons.Formatters in 'MarlusORM.Commons.Formatters.pas';
+  MarlusORM.Commons.Formatters in 'MarlusORM.Commons.Formatters.pas',
+  MarlusORM.Commons.Configurations in 'MarlusORM.Commons.Configurations.pas';
 
 end.
