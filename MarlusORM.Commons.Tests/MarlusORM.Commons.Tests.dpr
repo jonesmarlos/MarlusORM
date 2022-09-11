@@ -13,7 +13,11 @@ uses
   DUnitX.Loggers.Xml.NUnit,
   {$ENDIF }
   DUnitX.TestFramework,
-  MarlusORM.Commons.Formatter.Tests in 'MarlusORM.Commons.Formatter.Tests.pas';
+  MarlusORM.Commons.Attributes.Tests in 'MarlusORM.Commons.Attributes.Tests.pas',
+  MarlusORM.Commons.Configurations.Tests in 'MarlusORM.Commons.Configurations.Tests.pas',
+  MarlusORM.Commons.Formatters.Tests in 'MarlusORM.Commons.Formatters.Tests.pas',
+  MarlusORM.Commons.Rtti.Tests in 'MarlusORM.Commons.Rtti.Tests.pas',
+  MarlusORM.Commons.Types.Tests in 'MarlusORM.Commons.Types.Tests.pas';
 
 {$IFNDEF TESTINSIGHT}
 var
