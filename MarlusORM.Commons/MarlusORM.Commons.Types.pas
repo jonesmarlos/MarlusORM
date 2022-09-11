@@ -6,33 +6,39 @@ interface
 
 type
 
-  TSQLCase = (
+  TFormatterDefaults = (
     Default,
-    Lower,
-    Upper,
-    Camel,
-    Pascal,
-    Snake,
-    ScreamingSnake
+    LowerCase,
+    UpperCase,
+    CamelCase,
+    PascalCase,
+    SnakeCase,
+    ScreamingSnakeCase
   );
 
-  TSQLDatabase = (
-    Default,
-    Firebird
-  );
+  TFormatterDefaultsHelper = record helper for TFormatterDefaults
+  public
+    function Name: string; inline;
+  end;
 
-  TSQLSort = (
-    Default,
-    Never,
-    Always
-  );
-
-  TSQLOrder = (
-    Default,
-    Up,
-    Down
+const
+  FormatterDefaults: array[TFormatterDefaults] of string = (
+    'Default',
+    'LowerCase',
+    'UpperCase',
+    'CamelCase',
+    'PascalCase',
+    'SnakeCase',
+    'ScreamingSnakeCase'
   );
 
 implementation
+
+{ TFormatterDefaultsHelper }
+
+function TFormatterDefaultsHelper.Name: string;
+begin
+  Result := FormatterDefaults[Self];
+end;
 
 end.

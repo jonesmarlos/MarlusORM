@@ -98,16 +98,16 @@ begin
   if not Self.IsSQLField then
     Exit(EmptyStr);
 
-  Result := TSQLConfigurations.FieldFormatter.Format(Self.Name.Substring(1));
+  Result := TConfigurations.FieldFormatter.Format(Self.Name.Substring(1));
 
   for LAttribute in Self.GetAttributes do
     if LAttribute is SQLFieldAttribute then
-      Exit(TSQLConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
+      Exit(TConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
 
   for LProperty in Self.FieldType.GetProperties do
     for LAttribute in LProperty.GetAttributes do
       if LAttribute is SQLFieldAttribute then
-        Exit(TSQLConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
+        Exit(TConfigurations.FieldFormatter.Format(SQLFieldAttribute(LAttribute).Name));
 end;
 
 { TRttiTypeHelper }
@@ -124,11 +124,11 @@ begin
   if not Self.IsSQLEntity then
     Exit(EmptyStr);
 
-  Result := TSQLConfigurations.EntityFormatter.Format(Self.Name.Substring(1));
+  Result := TConfigurations.EntityFormatter.Format(Self.Name.Substring(1));
 
   for LAttribute in Self.GetAttributes do
     if LAttribute is SQLEntityAttribute then
-      Exit(TSQLConfigurations.EntityFormatter.Format(SQLEntityAttribute(LAttribute).Name));
+      Exit(TConfigurations.EntityFormatter.Format(SQLEntityAttribute(LAttribute).Name));
 end;
 
 function TRttiTypeHelper.SQLPrimaryKeyName: string;

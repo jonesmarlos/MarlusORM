@@ -8,83 +8,84 @@ uses
 
 type
 
-  TSQLConfigurations = class
+  TConfigurations = class
   private
-    class var FDatabase: TSQLDatabase;
-    class var FKeywordCase: TSQLCase;
-    class var FEntityCase: TSQLCase;
-    class var FFieldCase: TSQLCase;
-
-    class var FKeywordFormatter: TSQLCaseFormatter;
-    class var FEntityFormatter: TSQLCaseFormatter;
-    class var FFieldFormatter: TSQLCaseFormatter;
+    class var FKeywordFormatter: IFormatter;
+    class var FEntityFormatter: IFormatter;
+    class var FFieldFormatter: IFormatter;
   private
     {$HINTS OFF}
     constructor Create; reintroduce;
     {$HINTS ON}
   public
-    class property Database: TSQLDatabase read FDatabase;
+    class property KeywordFormatter: IFormatter read FKeywordFormatter;
+    class property EntityFormatter: IFormatter read FEntityFormatter;
+    class property FieldFormatter: IFormatter read FFieldFormatter;
 
-    class property KeywordCase: TSQLCase read FKeywordCase;
-    class property EntityCase: TSQLCase read FEntityCase;
-    class property FieldCase: TSQLCase read FFieldCase;
+    class procedure ConfigureKeywordFormatter(const AFormatter: IFormatter); overload; static;
+    class procedure ConfigureKeywordFormatter(const AFormatterName: string); overload; static;
 
-    class property KeywordFormatter: TSQLCaseFormatter read FKeywordFormatter;
-    class property EntityFormatter: TSQLCaseFormatter read FEntityFormatter;
-    class property FieldFormatter: TSQLCaseFormatter read FFieldFormatter;
+    class procedure ConfigureEntityFormatter(const AFormatter: IFormatter); overload; static;
+    class procedure ConfigureEntityFormatter(const AFormatterName: string); overload; static;
 
-    class procedure ConfigureDatabase(const ADatabase: TSQLDatabase); static;
-
-    class procedure ConfigureKeywordCase(const ACase: TSQLCase); static;
-    class procedure ConfigureEntityCase(const ACase: TSQLCase); static;
-    class procedure ConfigureFieldCase(const ACase: TSQLCase); static;
+    class procedure ConfigureFieldFormatter(const AFormatter: IFormatter); overload; static;
+    class procedure ConfigureFieldFormatter(const AFormatterName: string); overload; static;
   end;
 
 implementation
 
-{ TSQLConfigurations }
+{ TConfigurations }
 
-constructor TSQLConfigurations.Create;
+constructor TConfigurations.Create;
 begin
   inherited;
 end;
 
-class procedure TSQLConfigurations.ConfigureDatabase(const ADatabase: TSQLDatabase);
+class procedure TConfigurations.ConfigureKeywordFormatter(const AFormatter: IFormatter);
 begin
-  FDatabase := ADatabase;
+  if FKeywordFormatter <> AFormatter then
+    FKeywordFormatter := AFormatter;
 end;
 
-class procedure TSQLConfigurations.ConfigureKeywordCase(const ACase: TSQLCase);
+class procedure TConfigurations.ConfigureKeywordFormatter(const AFormatterName: string);
+var
+  LFormatter: IFormatter;
 begin
-  if FKeywordCase <> ACase then
-  begin
-    FKeywordCase := ACase;
-    FKeywordFormatter := TSQLCaseFormatters[ACase];
-  end;
+  LFormatter := TFormatters[AFormatterName];
+  TConfigurations.ConfigureKeywordFormatter(LFormatter);
 end;
 
-class procedure TSQLConfigurations.ConfigureEntityCase(const ACase: TSQLCase);
+class procedure TConfigurations.ConfigureEntityFormatter(const AFormatter: IFormatter);
 begin
-  if FEntityCase <> ACase then
-  begin
-    FEntityCase := ACase;
-    FEntityFormatter := TSQLCaseFormatters[ACase];
-  end;
+  if FEntityFormatter <> AFormatter then
+    FEntityFormatter := AFormatter;
 end;
 
-class procedure TSQLConfigurations.ConfigureFieldCase(const ACase: TSQLCase);
+class procedure TConfigurations.ConfigureEntityFormatter(const AFormatterName: string);
+var
+  LFormatter: IFormatter;
 begin
-  if FFieldCase <> ACase then
-  begin
-    FFieldCase := ACase;
-    FFieldFormatter := TSQLCaseFormatters[ACase];
-  end;
+  LFormatter := TFormatters[AFormatterName];
+  TConfigurations.ConfigureEntityFormatter(LFormatter);
+end;
+
+class procedure TConfigurations.ConfigureFieldFormatter(const AFormatter: IFormatter);
+begin
+  if FFieldFormatter <> AFormatter then
+    FFieldFormatter := AFormatter;
+end;
+
+class procedure TConfigurations.ConfigureFieldFormatter(const AFormatterName: string);
+var
+  LFormatter: IFormatter;
+begin
+  LFormatter := TFormatters[AFormatterName];
+  TConfigurations.ConfigureFieldFormatter(LFormatter);
 end;
 
 initialization
-  TSQLConfigurations.ConfigureDatabase(TSQLDatabase.Default);
-  TSQLConfigurations.ConfigureKeywordCase(TSQLCase.Upper);
-  TSQLConfigurations.ConfigureEntityCase(TSQLCase.Upper);
-  TSQLConfigurations.ConfigureFieldCase(TSQLCase.Upper);
+  TConfigurations.ConfigureKeywordFormatter(TFormatterDefaults.Default.Name);
+  TConfigurations.ConfigureEntityFormatter(TFormatterDefaults.Default.Name);
+  TConfigurations.ConfigureFieldFormatter(TFormatterDefaults.Default.Name);
 
 end.
